@@ -54,6 +54,24 @@
                     <li> - Update a player's loadout</li>
                     <li> - Delete a player along with their spellbooks</li>
                 </ol>
+
+                <nav class="navbar navbar-inverse">
+                    <div class="container-fluid">
+                        <!-- Brand and toggle get grouped -->
+                        <div class="navbar-header">
+                        <a class="navbar-brand" href="index.php">Gladiator Mages</a>
+                        </div>
+
+                        <!-- Links to other pages -->
+                        <ul class="navbar-index">
+                        <li class="active"><a href="index.php">Home</a></li>
+                        <li><a href="createSpellbook.php">Create Spellbook</a></li>
+                        <!-- Add more pages as needed -->
+                        </ul>
+                    </div>
+                </nav>
+
+
 		       <h2 class="pull-left">PLACEHOLDER</h2>
                         <a href="createEmployee.php" class="btn btn-success pull-right">Add New Employee</a>
                     </div>
