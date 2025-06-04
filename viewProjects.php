@@ -36,7 +36,7 @@
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">View Projects</h2>
-						<a href="addProject.php" class="btn btn-success pull-right">Add Project</a>
+						<a href="createSpellbook.php" class="btn btn-success pull-right">Add Project</a>
                     </div>
 <?php
 
