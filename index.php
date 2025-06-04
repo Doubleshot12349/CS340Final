@@ -56,7 +56,6 @@
                 </ol>
 
                 <nav class="navbar navbar-inverse">
-                    <div class="container-fluid">
                         <!-- Brand and toggle get grouped -->
                         <div class="navbar-header">
                         <a class="navbar-brand" href="index.php">Gladiator Mages</a>
@@ -68,9 +67,7 @@
                         <li><a href="createSpellbook.php">Create Spellbook</a></li>
                         <!-- Add more pages as needed -->
                         </ul>
-                    </div>
                 </nav>
-
 
 		       <h2 class="pull-left">PLACEHOLDER</h2>
                         <a href="createEmployee.php" class="btn btn-success pull-right">Add New Employee</a>
