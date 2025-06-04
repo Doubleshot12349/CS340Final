@@ -32,25 +32,29 @@
 		 $('.selectpicker').selectpicker();
     </script>
 </head>
+
 <body>
+
     <?php
         // Include config file
         require_once "config.php";
-//		include "header.php";
-	?>
+        //		include "header.php";
+    ?>
+
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
 		    <div class="page-header clearfix">
-		     <h2> Sample Project CS 340 </h2> 
-                       <p> Project should include CRUD operations. In this website you can:
-				<ol> 	<li> CREATE new employess and  dependents </li>
-					<li> RETRIEVE all dependents and prjects for an employee</li>
-                                        <li> UPDATE employeee and dependent records</li>
-					<li> DELETE employee and dependent records </li>
-				</ol>
-		       <h2 class="pull-left">Employee Details</h2>
+                <h1>Gladiator Mages</h1>
+                <p>This UI allows you to perform the following CRUD operations:</p>
+                <ol>
+                    <li> - Create spellbooks, create relations between existing spells and spellbooks</li>
+                    <li> - Read all spells in a player's equipped loadout/spellbook, or specific spells of a specific element</li>
+                    <li> - Update a player's loadout</li>
+                    <li> - Delete a player along with their spellbooks</li>
+                </ol>
+		       <h2 class="pull-left">PLACEHOLDER</h2>
                         <a href="createEmployee.php" class="btn btn-success pull-right">Add New Employee</a>
                     </div>
                     <?php
