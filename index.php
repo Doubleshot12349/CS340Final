@@ -52,7 +52,7 @@
                     <li> - Create spellbooks, create relations between existing spells and spellbooks</li>
                     <li> - Read all spells in a player's equipped loadout/spellbook, or specific spells of a specific element</li>
                     <li> - Update a player's loadout</li>
-                    <li> - Delete a player along with their spellbooks</li>
+                    <li> - Delete a player along with their</li>
                 </ol>
 
                 <nav class="navbar navbar-inverse">
