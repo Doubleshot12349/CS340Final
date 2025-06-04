@@ -71,7 +71,6 @@
                     </div>
                 </nav>
 
-
 		       <h2 class="pull-left">PLACEHOLDER</h2>
                         <a href="createEmployee.php" class="btn btn-success pull-right">Add New Employee</a>
                     </div>
