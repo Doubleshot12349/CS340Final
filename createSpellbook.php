@@ -101,7 +101,7 @@
 	if (!$conn) {
 		die('Could not connect: ' . mysqli_error());
 	}
-	$sql = "SELECT Pnumber, Pname FROM PROJECT";
+	$sql = "SELECT name FROM Player";
 	$result = mysqli_query($conn, $sql);
 	if (!$result) {
 		die("Query to show fields from table failed");
@@ -111,7 +111,7 @@
 
 	<form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
 		<div class="form-group <?php echo (!empty($player_id_err)) ? 'has-error' : ''; ?>">
-            <label>Project number & name</label>
+            <label>Player Username</label>
 			<select name="spellbook_id" class="form-control">
 			<?php
 
@@ -124,8 +124,8 @@
             <span class="help-block"><?php echo $spellbook_id_err;?></span>
 		</div>
 		<div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
-			<label>name </label>
-			<input type="number" name="name" class="form-control" min="1" max="80" value="">
+			<label>Spellbook Name </label>
+			<input type="text" name="name" class="form-control" value="">
 			<span class="help-block"><?php echo $name_err;?></span>
 		</div>
 		<div>
