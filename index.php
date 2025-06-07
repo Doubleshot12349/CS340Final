@@ -65,6 +65,8 @@
                         <ul class="navbar-index">
                         <li class="active"><a href="index.php">Home</a></li>
                         <li><a href="createSpellbook.php">Create Spellbook</a></li>
+                        <li class="active"><a href="deleteUser.php">Delete Player</a></li>
+                        <li class="active"><a href="updateLoadout.php">Update Loadout</a></li>
                         <!-- Add more pages as needed -->
                         </ul>
                 </nav>
