@@ -3,19 +3,16 @@ session_start();
 require_once "config.php";
 
 function changeLoadout($player_id, $spellbook_id, $link) {
-    // Check if player exists
     $sql_select_player = "SELECT * FROM Player WHERE player_id = ?";
     if ($stmt_select_player = mysqli_prepare($link, $sql_select_player)) {
         mysqli_stmt_bind_param($stmt_select_player, "s", $player_id);
         if (mysqli_stmt_execute($stmt_select_player)) {
             $result_player = mysqli_stmt_get_result($stmt_select_player);
             if (mysqli_num_rows($result_player) == 1) {
-                // Player exists, proceed to update loadout
                 $sql_update_loadout = "UPDATE Player SET loadout = ? WHERE player_id = ?";
                 if ($stmt_update_loadout = mysqli_prepare($link, $sql_update_loadout)) {
                     mysqli_stmt_bind_param($stmt_update_loadout, "ss", $spellbook_id, $player_id);
                     if (mysqli_stmt_execute($stmt_update_loadout)) {
-                        // Loadout updated successfully
                         echo "Loadout updated successfully.";
                     } else {
                         echo "Error updating loadout.";
@@ -36,17 +33,11 @@ function changeLoadout($player_id, $spellbook_id, $link) {
     }
 }
 
-// Process form submission if POST request
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate and sanitize input (assuming spellbook_id is from form input)
-    $player_id = $_SESSION["player_id"]; // Assuming player_id is stored in session
-    $spellbook_id = trim($_POST["spellbook_id"]); // Assuming spellbook_id is from form input
 
-    // Call function to change loadout
     changeLoadout($player_id, $spellbook_id, $link);
 }
 
-// Close connection
 mysqli_close($link);
 ?>
 

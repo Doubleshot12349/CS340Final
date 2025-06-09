@@ -2,7 +2,6 @@
 require_once "config.php";
 
 function createSpellbook($player_id, $spellbook_name, $link) {
-    // Check if the player exists
     $sql_check_player = "SELECT * FROM Player WHERE player_id = ?";
     if ($stmt = mysqli_prepare($link, $sql_check_player)) {
         mysqli_stmt_bind_param($stmt, "s", $player_id);
@@ -15,7 +14,6 @@ function createSpellbook($player_id, $spellbook_name, $link) {
         mysqli_stmt_close($stmt);
     }
 
-    // Check if spellbook name already exists for the player
     $sql_check_name = "SELECT * FROM Spellbook WHERE player_id = ? AND name = ?";
     if ($stmt = mysqli_prepare($link, $sql_check_name)) {
         mysqli_stmt_bind_param($stmt, "ss", $player_id, $spellbook_name);
@@ -28,7 +26,6 @@ function createSpellbook($player_id, $spellbook_name, $link) {
         mysqli_stmt_close($stmt);
     }
 
-    // Generate a new spellbook_id (max + 1)
     $sql_max_id = "SELECT MAX(spellbook_id) AS max_id FROM Spellbook";
     $result = mysqli_query($link, $sql_max_id);
     $new_id = 1;
@@ -36,7 +33,6 @@ function createSpellbook($player_id, $spellbook_name, $link) {
         $new_id = $row["max_id"] + 1;
     }
 
-    // Insert the new spellbook
     $sql_insert = "INSERT INTO Spellbook (spellbook_id, name, player_id) VALUES (?, ?, ?)";
     if ($stmt = mysqli_prepare($link, $sql_insert)) {
         mysqli_stmt_bind_param($stmt, "iss", $new_id, $spellbook_name, $player_id);

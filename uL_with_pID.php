@@ -1,9 +1,7 @@
 <?php
 require_once "config.php";
 
-// --- Function to change loadout ---
 function changeLoadout($player_id, $spellbook_id, $link) {
-    // Check if spellbook exists
     $sql_check_spellbook = "SELECT * FROM Spellbook WHERE spellbook_id = ?";
     if ($stmt_spellbook = mysqli_prepare($link, $sql_check_spellbook)) {
         mysqli_stmt_bind_param($stmt_spellbook, "i", $spellbook_id);
@@ -16,7 +14,6 @@ function changeLoadout($player_id, $spellbook_id, $link) {
         mysqli_stmt_close($stmt_spellbook);
     }
 
-    // Check if player exists
     $sql_check_player = "SELECT * FROM Player WHERE player_id = ?";
     if ($stmt_check = mysqli_prepare($link, $sql_check_player)) {
         mysqli_stmt_bind_param($stmt_check, "s", $player_id);
@@ -29,7 +26,6 @@ function changeLoadout($player_id, $spellbook_id, $link) {
         mysqli_stmt_close($stmt_check);
     }
 
-    // Update loadout
     $sql_update = "UPDATE Player SET loadout = ? WHERE player_id = ?";
     if ($stmt_update = mysqli_prepare($link, $sql_update)) {
         mysqli_stmt_bind_param($stmt_update, "is", $spellbook_id, $player_id);
@@ -42,7 +38,6 @@ function changeLoadout($player_id, $spellbook_id, $link) {
     }
 }
 
-// --- Handle POST submission ---
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $player_id = trim($_POST["player_id"]);
     $spellbook_id = trim($_POST["spellbook_id"]);
@@ -53,7 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// --- Load spellbook data ---
 $sql = "SELECT 
             P.player_id AS 'Player ID',
             P.name AS 'Player Name',

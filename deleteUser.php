@@ -12,7 +12,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message = "Please enter a Player ID.";
         $message_class = "alert-warning";
     } else {
-        // Check if player exists
         $sql_check = "SELECT * FROM Player WHERE player_id = ?";
         if ($stmt_check = mysqli_prepare($link, $sql_check)) {
             mysqli_stmt_bind_param($stmt_check, "s", $player_id);
@@ -20,7 +19,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $result = mysqli_stmt_get_result($stmt_check);
 
             if (mysqli_num_rows($result) === 1) {
-                // Player exists, proceed to delete
                 mysqli_stmt_close($stmt_check);
 
                 $sql_delete = "DELETE FROM Player WHERE player_id = ?";
@@ -29,7 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if (mysqli_stmt_execute($stmt_delete)) {
                         $message = "Player with ID <strong>" . htmlspecialchars($player_id) . "</strong> has been deleted.";
                         $message_class = "alert-success";
-                        $player_id = ""; // Clear input field
                     } else {
                         $message = "Error deleting the player.";
                         $message_class = "alert-danger";
