@@ -28,12 +28,18 @@ if(isset($_GET["player_id"]) && !empty(trim($_GET["player_id"]))){
 
 				$row = mysqli_fetch_array($result1);
 
-                $score = $row['score'];
-                $level = $row['level'];
                 $name = $row['name'];
+                $level = $row['level'];
+                $score = $row['score'];
                 $loadout = $row['loadout'];
-			}
-		}
+			} else {
+                header("location: error.php");
+                exit();
+            }
+		} else {
+            echo "Error fetching player details.";
+        }
+        mysqli_stmt_close($stmt1);
 	}
 }
  
@@ -45,6 +51,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate form data this is similar to the create Player file
     // Validate name
     $name = trim($_POST["name"]);
+    $level = trim($_POST["level"]);
+    $score = trim($_POST["score"]);
+    $loadout = trim($_POST["loadout"]);
 
     if(empty($name)){
         $name_err = "Please enter a first name.";
@@ -55,19 +64,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before inserting into database
     if(empty($name_err) && empty($level_err) && empty($score_err) && empty($loadout_err)){
         // Prepare an update statement
-        $sql = "UPDATE Player SET name=?, level=?, score = ?, loadout = ? WHERE player_id=?";
+        $sql = "UPDATE Player SET name=?, level=?, score=?, loadout=? WHERE player_id=?";
     
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sssdis", $param_name, $param_level, $param_score,$param_loadout, $param_player_id);
-            
-            // Set parameters
-            $param_name = $name;
-			$param_level = $level;
-            $param_score = $score;
-            $param_loadout = $loadout;
-            $param_player_id = $player_id;
-            
+            mysqli_stmt_bind_param($stmt, "ssdis", $name, $level, $score,$loadout, $player_id);
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records updated successfully. Redirect to landing page
