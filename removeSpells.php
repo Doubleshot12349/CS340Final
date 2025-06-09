@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Spell Removal</title>
+    <title>View Record</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         .wrapper{
@@ -56,14 +56,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <h1>Remove Spell</h1>
                     </div>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-    <input type="hidden" name="spell_id" value="<?php echo htmlspecialchars($_GET['spell_id']); ?>">
-    <input type="hidden" name="spellbook_id" value="<?php echo htmlspecialchars($_GET['spellbook_id']); ?>">
-    <div class="alert alert-danger fade in">
-        <p>Are you sure you want to remove the spell from this spellbook?</p><br>
-        <input type="submit" value="Yes" class="btn btn-danger">
-        <a href="index.php" class="btn btn-default">No</a>
-    </div>
-</form>
+						<input type="hidden" name="spell_id" value="<?php echo htmlspecialchars($_GET['spell_id']); ?>">
+						<input type="hidden" name="spellbook_id" value="<?php echo htmlspecialchars($_GET['spellbook_id']); ?>">
+						<div class="alert alert-danger fade in">
+							<p>Are you sure you want to remove the spell from this spellbook?</p><br>
+							<input type="submit" value="Yes" class="btn btn-danger">
+							<a href="index.php" class="btn btn-default">No</a>
+						</div>
+					</form>
 
                 </div>
             </div>        
