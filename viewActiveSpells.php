@@ -72,8 +72,8 @@
                         echo "<td>" . $row[0] . "</td>";
                         echo "<td>" . $row[1] . "</td>";
 						echo "<td>";
-						  echo "<a href='addSpells.php?spell_id=". $row['spell_id']."&spellbook_id=".$row['spellbook_id'] ."' title='Add Spell' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                          echo "<a href='removeSpells.php?spell_id=". $row['spell_id']."&spellbook_id=".$row['spellbook_id'] ."' title='Remove Spell' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+						  echo "<a href='addSpells.php?spell_id=". $row[2]."&spellbook_id=".$row[3] ."' title='Add Spell' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                          echo "<a href='removeSpells.php?spell_id=". $row[2]."&spellbook_id=".$row[3] ."' title='Remove Spell' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                         echo "</td>";
 						echo "</tr>";
                     }
