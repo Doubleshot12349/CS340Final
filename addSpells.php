@@ -16,21 +16,16 @@
  
 	// Processing form data when form is submitted
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
-		// Validate Project number
-		$spellbook_id = trim($_POST["spellbook_id"]);
-		if(empty($spellbook_id)){
-			$spellbook_id_err = "Please select a spellbook.";
-		} 
-    
 		// Validate spellbook_id
 		$spellbook_id = trim($_POST["spellbook_id"]);
 		if(empty($spellbook_id)){
-			$spellbook_id_err = "Please enter spellbook_id";     
+			$spellbook_id_err = "Please enter a spellbook_id";     
 		}
 	
 		// Validate the spell_id
+		$spell_id = trim($_POST["spell_id"]);
 		if(empty($spell_id)){
-			$spell_id_err = "No spell_id.";     
+			$spell_id_err = "Please enter a spell_id";     
 		}
 
 
@@ -42,11 +37,11 @@
 
         	if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-				mysqli_stmt_bind_param($stmt, 'sii', $param_spell_id, $param_spellbook_id, $param_spellbook_id);
+				mysqli_stmt_bind_param($stmt, 'ii', $param_spellbook_id, $param_spell_id);
             
 				// Set parameters
-				$param_spell_id = $spell_id;
 				$param_spellbook_id = $spellbook_id;
+				$param_spell_id = $spell_id;
         
             // Attempt to execute the prepared statement
 				if(mysqli_stmt_execute($stmt)){
@@ -99,16 +94,16 @@
 	if (!$conn) {
 		die('Could not connect: ' . mysqli_error());
 	}
-	$sql = "SELECT name FROM Spellbook";
+	$sql = "SELECT spellbook_id, name FROM Spellbook";
 	$result = mysqli_query($conn, $sql);
 	if (!$result) {
 		die("Query to show fields from table failed");
 	}
 	$num_row = mysqli_num_rows($result);
     //query2	
-    $sql2 = "SELECT name FROM Spell";
+    $sql2 = "SELECT spell_id, name FROM Spell";
 	$result2 = mysqli_query($conn, $sql2);
-	if (!$result) {
+	if (!$result2) {
 		die("Query to show fields from table failed");
 	}
 	$num_row2 = mysqli_num_rows($result2);
@@ -140,11 +135,15 @@
 			?>
 		</div>
 		<div>
-			<input type="submit" class="btn btn-success pull-left" value="Add Project">	
+			<input type="submit" class="btn btn-success pull-left" value="Add Spell">	
 			&nbsp;
-			<a href="viewProjects.php" class="btn btn-primary">List Projects</a>
+			<a href="viewActiveSpells.php" class="btn btn-primary">View Active Spells</a>
 
 		</div>
+		<div>
+			<a href="index.php" class="btn btn-default">Home</a>
+		</div>
+
 	</form>
 <?php		
 	mysqli_free_result($result);
