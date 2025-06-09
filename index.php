@@ -47,8 +47,8 @@
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();   
+            // $('.selectpicker').selectpicker();
         });
-		 $('.selectpicker').selectpicker();
     </script>
 </head>
 
@@ -59,8 +59,24 @@
         require_once "config.php";
         //		include "header.php";
 
-        $sql = "SELECT player_id, name, score FROM Player ORDER BY score DESC LIMIT 10";
+        $sql = "SELECT p.name, p.score 
+                FROM Player p  
+                JOIN placed_on po ON p.player_id = po.player_id 
+                WHERE po.lb_id = 1
+                    AND p.score IS NOT NULL
+                    AND p.score > 0
+                ORDER BY p.score DESC LIMIT 5";
+        // $sql = "SELECT * FROM placed_on WHERE lb_id = 1";
         $result = mysqli_query($link, $sql);
+        if (!$result) {
+            die("Query failed: " . mysqli_error($link));
+        }
+        // while ($row = mysqli_fetch_assoc($result)) {
+        //     echo '<pre>';
+        //         print_r($row);
+        //     echo '</pre>';
+        // }
+
 
     ?>
 
@@ -82,12 +98,12 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="index.php">Home</a></li>
                         <!-- <li><a href="createSpellbook.php">Create Spellbook</a></li> -->
-                        <li class="active"><a href="createSB_connor.php">Create Spellbook</a></li>
-                        <li class="active"><a href="viewActiveSpells.php">View Active Spells</a></li>
-                        <li class="active"><a href="updateScore.php">Update Score</a></li>
-                        <li class="active"><a href="uL_with_pID.php">Update Loadout</a></li>
-                        <li class="active"><a href="deleteUser.php">Delete Player</a></li>
-                        <!-- <li class="active"><a href="updateLoadout.php">Update Loadout</a></li> -->
+                        <li><a href="createSB_connor.php">Create Spellbook</a></li>
+                        <li><a href="viewActiveSpells.php">View Active Spells</a></li>
+                        <li><a href="updateScore.php">Update Score</a></li>
+                        <li><a href="uL_with_pID.php">Update Loadout</a></li>
+                        <li><a href="deleteUser.php">Delete Player</a></li>
+                        <!-- <li><a href="updateLoadout.php">Update Loadout</a></li> -->
                         <!-- Add more pages as needed -->
                     </ul>
                 </nav>
@@ -116,19 +132,9 @@
                 <?php else: ?>
                     <div class="alert alert-info">No players found in the leaderboard.</div>
                 <?php endif; ?>
-
-
-		       
-                    </div>
-                    <?php
-                    // Include config file
-                    require_once "config.php";
-                    
-					
-                    // Close connection
-                    mysqli_close($link);
-                    ?>
-                </div>
+            </div>
+        </div>
+    <?php mysqli_close($link); ?>
 
 </body>
 </html>
