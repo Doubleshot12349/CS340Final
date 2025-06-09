@@ -1,144 +1,51 @@
 <?php
-	session_start();	
-// Include config file
-	require_once "config.php";
- 
-// Define variables and initialize with empty values
-// Note: You can not update player_id 
-$score = $level = $name = $loadout = "";
-$score_err = $level_err = $name_err = $loadout_err = "" ;
-// Form default values
+session_start();
+require_once "config.php";
 
-if(isset($_GET["player_id"]) && !empty(trim($_GET["player_id"]))){
-	$_SESSION["player_id"] = $_GET["player_id"];
-
-    // Prepare a select statement
-    $sql1 = "SELECT * FROM Player WHERE player_id = ?";
-  
-    if($stmt1 = mysqli_prepare($link, $sql1)){
-        // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt1, "s", $param_player_id);      
-        // Set parameters
-       $param_player_id = trim($_GET["player_id"]);
-
-        // Attempt to execute the prepared statement
-        if(mysqli_stmt_execute($stmt1)){
-            $result1 = mysqli_stmt_get_result($stmt1);
-			if(mysqli_num_rows($result1) > 0){
-
-				$row = mysqli_fetch_array($result1);
-
-                $score = $row['score'];
-                $level = $row['level'];
-                $name = $row['name'];
-                $loadout = $row['loadout'];
-			}
-		}
-	}
-}
- 
-// Post information about the Player when the form is submitted
-// Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    // the id is hidden and can not be changed
-    $player_id = $_SESSION["player_id"];
-    // Validate form data this is similar to the create Player file
-    // Validate name
-    $name = trim($_POST["name"]);
-
-    if(empty($name)){
-        $name_err = "Please enter a first name.";
-    } elseif(!filter_var($name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
-        $name_err = "Please enter a valid first name.";
-    } 
-
-    // Check input errors before inserting into database
-    if(empty($name_err) && empty($level_err) && empty($score_err) && empty($loadout_err)){
-        // Prepare an update statement
-        $sql = "UPDATE Player SET name=?, level=?, score = ?, loadout = ? WHERE player_id=?";
-    
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sssdis", $param_name, $param_level, $param_score,$param_loadout, $param_player_id);
-            
-            // Set parameters
-            $param_name = $name;
-			$param_level = $level;
-            $param_score = $score;
-            $param_loadout = $loadout;
-            $param_player_id = $player_id;
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Records updated successfully. Redirect to landing page
-                header("location: index.php");
-                exit();
-            } else{
-                echo "<center><h2>Error when updating</center></h2>";
+function changeLoadout($player_id, $spellbook_id, $link) {
+    $sql_select_player = "SELECT * FROM Player WHERE player_id = ?";
+    if ($stmt_select_player = mysqli_prepare($link, $sql_select_player)) {
+        mysqli_stmt_bind_param($stmt_select_player, "s", $player_id);
+        if (mysqli_stmt_execute($stmt_select_player)) {
+            $result_player = mysqli_stmt_get_result($stmt_select_player);
+            if (mysqli_num_rows($result_player) == 1) {
+                $sql_update_loadout = "UPDATE Player SET loadout = ? WHERE player_id = ?";
+                if ($stmt_update_loadout = mysqli_prepare($link, $sql_update_loadout)) {
+                    mysqli_stmt_bind_param($stmt_update_loadout, "ss", $spellbook_id, $player_id);
+                    if (mysqli_stmt_execute($stmt_update_loadout)) {
+                        echo "Loadout updated successfully.";
+                    } else {
+                        echo "Error updating loadout.";
+                    }
+                    mysqli_stmt_close($stmt_update_loadout);
+                } else {
+                    echo "Failed to prepare update statement.";
+                }
+            } else {
+                echo "Player not found.";
             }
-        }        
-        // Close statement
-        mysqli_stmt_close($stmt);
+        } else {
+            echo "Error executing select statement.";
+        }
+        mysqli_stmt_close($stmt_select_player);
+    } else {
+        echo "Failed to prepare select statement.";
     }
-    
-    // Close connection
-    mysqli_close($link);
-} else {
-
-    // Check existence of sID parameter before processing further
-	// Form default values
-
-	if(isset($_GET["player_id"]) && !empty(trim($_GET["player_id"]))){
-		$_SESSION["player_id"] = $_GET["player_id"];
-
-		// Prepare a select statement
-		$sql1 = "SELECT * FROM Player WHERE player_id = ?";
-  
-		if($stmt1 = mysqli_prepare($link, $sql1)){
-			// Bind variables to the prepared statement as parameters
-			mysqli_stmt_bind_param($stmt1, "s", $param_player_id);      
-			// Set parameters
-			$param_player_id = trim($_GET["player_id"]);
-
-			// Attempt to execute the prepared statement
-			if(mysqli_stmt_execute($stmt1)){
-				$result1 = mysqli_stmt_get_result($stmt1);
-				if(mysqli_num_rows($result1) == 1){
-
-					$row = mysqli_fetch_array($result1);
-
-					$param_name = $name;
-                    $param_level = $level;
-                    $param_score = $score;
-                    $param_loadout = $loadout;
-                    $param_player_id = $player_id;
-				} else{
-					// URL doesn't contain valid id. Redirect to error page
-					header("location: error.php");
-					exit();
-				}                
-			} else{
-				echo "Error in player_id while updating";
-			}		
-		}
-			// Close statement
-			mysqli_stmt_close($stmt1);
-        
-			// Close connection
-			mysqli_close($link);
-	}  else{
-        // URL doesn't contain id parameter. Redirect to error page
-        header("location: error.php");
-        exit();
-	}	
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    changeLoadout($player_id, $spellbook_id, $link);
+}
+
+mysqli_close($link);
 ?>
- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Company DB</title>
+    <title>Change Player Loadout</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         .wrapper{
@@ -153,36 +60,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header">
-                        <h3>Update Record for player_id =  <?php echo $_GET["player_id"]; ?> </H3>
+                        <h3>Change Player Loadout</h3>
                     </div>
-                    <p>Please edit the input values and submit to update.
-                    <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
-						<div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
-                            <label>First Name</label>
-                            <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
-                            <span class="help-block"><?php echo $name_err;?></span>
+                    <p>Please enter the Spellbook ID to update the player's loadout.</p>
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <div class="form-group">
+                            <label>Spellbook ID</label>
+                            <input type="number" min="1" name="spellbook_id" class="form-control" required>
                         </div>
-						<div class="form-group <?php echo (!empty($level_err)) ? 'has-error' : ''; ?>">
-                            <label>level</label>
-                            <input type="text" name="level" class="form-control" value="<?php echo $level; ?>">
-                            <span class="help-block"><?php echo $level_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($score_err)) ? 'has-error' : ''; ?>">
-                            <label>score</label>
-                            <input type="text" name="score" class="form-control" value="<?php echo $score; ?>">
-                            <span class="help-block"><?php echo $score_err;?></span>
-                        </div>
-						<div class="form-group <?php echo (!empty($loadout_err)) ? 'has-error' : ''; ?>">
-                            <label>Department Number</label>
-                            <input type="number" min="1" max="20" name="loadout" class="form-control" value="<?php echo $loadout; ?>">
-                            <span class="help-block"><?php echo $loadout_err;?></span>
-                        </div>						
-                        <input type="hidden" name="player_id" value="<?php echo $player_id; ?>"/>
-                        <input type="submit" class="btn btn-primary" value="Submit">
+                        <input type="submit" class="btn btn-primary" value="Change Loadout">
                         <a href="index.php" class="btn btn-default">Cancel</a>
                     </form>
                 </div>
-            </div>        
+            </div>
         </div>
     </div>
 </body>

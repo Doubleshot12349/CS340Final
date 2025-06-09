@@ -1,81 +1,82 @@
 <?php
-	session_start();
-	if(isset($_GET["player_id"]) && !empty(trim($_GET["player_id"]))){
-		$_SESSION["player_id"] = $_GET["player_id"];
-	}
+require_once "config.php";
 
-    require_once "config.php";
-	// Delete an Employee's record after confirmation
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		if(isset($_SESSION["player_id"]) && !empty($_SESSION["player_id"])){ 
-			$player_id = $_SESSION['player_id'];
-			// Prepare a delete statement
-			$sql = "DELETE FROM Player WHERE player_id = ?";
-   
-			if($stmt = mysqli_prepare($link, $sql)){
-			// Bind variables to the prepared statement as parameters
-				mysqli_stmt_bind_param($stmt, "s", $param_player_id);
- 
-				// Set parameters
-				$param_player_id = $player_id;
-       
-				// Attempt to execute the prepared statement
-				if(mysqli_stmt_execute($stmt)){
-					// Records deleted successfully. Redirect to landing page
-					header("location: index.php");
-					exit();
-				} else{
-					echo "Error deleting the Player";
-				}
-			}
-		}
-		// Close statement
-		mysqli_stmt_close($stmt);
-    
-		// Close connection
-		mysqli_close($link);
-	} else{
-		// Check existence of id parameter
-		if(empty(trim($_GET["player_id"]))){
-			// URL doesn't contain id parameter. Redirect to error page
-			header("location: error.php");
-			exit();
-		}
-	}
+$player_id = "";
+$message = "";
+$message_class = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $player_id = trim($_POST["player_id"]);
+
+    if (empty($player_id)) {
+        $message = "Please enter a Player ID.";
+        $message_class = "alert-warning";
+    } else {
+        $sql_check = "SELECT * FROM Player WHERE player_id = ?";
+        if ($stmt_check = mysqli_prepare($link, $sql_check)) {
+            mysqli_stmt_bind_param($stmt_check, "s", $player_id);
+            mysqli_stmt_execute($stmt_check);
+            $result = mysqli_stmt_get_result($stmt_check);
+
+            if (mysqli_num_rows($result) === 1) {
+                mysqli_stmt_close($stmt_check);
+
+                $sql_delete = "DELETE FROM Player WHERE player_id = ?";
+                if ($stmt_delete = mysqli_prepare($link, $sql_delete)) {
+                    mysqli_stmt_bind_param($stmt_delete, "s", $player_id);
+                    if (mysqli_stmt_execute($stmt_delete)) {
+                        $message = "Player with ID <strong>" . htmlspecialchars($player_id) . "</strong> has been deleted.";
+                        $message_class = "alert-success";
+                    } else {
+                        $message = "Error deleting the player.";
+                        $message_class = "alert-danger";
+                    }
+                    mysqli_stmt_close($stmt_delete);
+                } else {
+                    $message = "Failed to prepare delete statement.";
+                    $message_class = "alert-danger";
+                }
+            } else {
+                $message = "Player ID not found.";
+                $message_class = "alert-warning";
+            }
+            mysqli_stmt_close($stmt_check);
+        } else {
+            $message = "Failed to prepare check statement.";
+            $message_class = "alert-danger";
+        }
+    }
+    mysqli_close($link);
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>View Record</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
-        .wrapper{
-            width: 500px;
-            margin: 0 auto;
-        }
+    <meta charset="UTF-8" />
+    <title>Delete Gladiator Mage Account</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" />
+    <style>
+        .wrapper { width: 400px; margin: 40px auto; }
     </style>
 </head>
 <body>
     <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header">
-                        <h1>Delete Gladiator Mage Account</h1>
-                    </div>
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <div class="alert alert-danger fade in">
-                            <input type="hidden" name="player_id" value="<?php echo ($_SESSION["player_id"]); ?>"/>
-                            <p>Are you sure you want to delete the account for <?php echo ($_SESSION["player_id"]); ?>?</p><br>
-                                <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="index.php" class="btn btn-default">No</a>
-                            </p>
-                        </div>
-                    </form>
-                </div>
-            </div>        
-        </div>
+        <h2>Delete Gladiator Mage Account</h2>
+        <p>Enter the Player ID to delete their account.</p>
+
+        <?php if ($message): ?>
+            <div class="alert <?php echo $message_class; ?>"><?php echo $message; ?></div>
+        <?php endif; ?>
+
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <div class="form-group">
+                <label for="player_id">Player ID</label>
+                <input type="text" name="player_id" id="player_id" class="form-control" value="<?php echo htmlspecialchars($player_id); ?>" required />
+            </div>
+            <input type="submit" class="btn btn-danger" value="Delete Player" />
+            <a href="index.php" class="btn btn-default">Cancel</a>
+        </form>
     </div>
 </body>
 </html>
