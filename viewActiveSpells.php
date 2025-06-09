@@ -36,12 +36,12 @@
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">View Active Spells</h2>
-						<a href="swapSpellbook.php" class="btn btn-success pull-right">Swap Spellbook</a>
+						<a href="uL_with_pID.php" class="btn btn-success pull-right">Swap Spellbook</a>
                     </div>
 <?php
 
     // Prepare a select statement
-    $sql = "SELECT P.name AS 'Player Name',SpellB.name AS 'Spell Name'
+    $sql = "SELECT P.player_id AS 'Player ID', P.name AS 'Player Name',SpellB.name AS 'Spell Name'
         ,SpellB.spell_id,SpellB.spellbook_id
         FROM Player AS P 
             JOIN (SELECT S.name,S.spell_id,SB.spellbook_id FROM Spellbook AS SB 
@@ -61,6 +61,7 @@
 				echo "<table class='table table-bordered table-striped'>";
                     echo "<thead>";
                         echo "<tr>";
+                            echo "<th>Player ID </th>";
                             echo "<th>Player Name </th>";
                             echo "<th>Spell Name </th>";
                         echo "</tr>";
@@ -71,6 +72,7 @@
                         echo "<tr>";
                         echo "<td>" . $row[0] . "</td>";
                         echo "<td>" . $row[1] . "</td>";
+                        echo "<td>" . $row[2] . "</td>";
 						echo "<td>";
 						  echo "<a href='addSpells.php?spell_id=". $row['spell_id']."&spellbook_id=".$row['spellbook_id'] ."' title='Add Spell' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
                           echo "<a href='removeSpells.php?spell_id=". $row['spell_id']."&spellbook_id=".$row['spellbook_id'] ."' title='Remove Spell' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
