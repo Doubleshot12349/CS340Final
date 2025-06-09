@@ -36,26 +36,22 @@
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">View Active Spells</h2>
-						<a href="createDependents.php" class="btn btn-success pull-right">Add Dependent</a>
+						<a href="swapSpellbook.php" class="btn btn-success pull-right">Swap Spellbook</a>
                     </div>
 <?php
 
     // Prepare a select statement
-    $sql = "SELECT P.name AS 'Player Name',SpellB.name AS 'Spell Name' 
+    $sql = "SELECT P.name AS 'Player Name',SpellB.name AS 'Spell Name'
+        ,SpellB.spell_id,SpellB.spellbook_id
         FROM Player AS P 
-            JOIN (SELECT S.name,SB.spellbook_id FROM Spellbook AS SB 
+            JOIN (SELECT S.name,S.spell_id,SB.spellbook_id FROM Spellbook AS SB 
             JOIN contains AS C ON SB.spellbook_id=C.spellbook_id
             JOIN Spell AS S ON C.spell_id=S.spell_id) AS SpellB
                 ON SpellB.spellbook_id=P.loadout";
 
-  
+    // fails to prepare
     if($stmt = mysqli_prepare($link, $sql)){
-        /* delete me?
-        // Bind variables to the prepared statement as parameters
-        //mysqli_stmt_bind_param($stmt, "s", $param_Ssn);      
-        // Set parameters
-       $param_Ssn = $_SESSION["Ssn"];
-	   $Lname = $_SESSION["Lname"];*/
+        
 
         // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){
@@ -76,9 +72,8 @@
                         echo "<td>" . $row[0] . "</td>";
                         echo "<td>" . $row[1] . "</td>";
 						echo "<td>";
-						  echo "<a href='updateDependent.php?Dname=". $row['Dependent_name'] ."' title='Update Dependent' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                          //TODO update link
-                          echo "<a href='deleteDependent.php?Dname=". $row['Dependent_name'] ."' title='Delete Dependent' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+						  echo "<a href='addSpells.php?spell_id=". $row['spell_id']."&spellbook_id=".$row['spellbook_id'] ."' title='Add Spell' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                          echo "<a href='removeSpells.php?spell_id=". $row['spell_id']."&spellbook_id=".$row['spellbook_id'] ."' title='Remove Spell' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                         echo "</td>";
 						echo "</tr>";
                     }
@@ -94,7 +89,7 @@
             header("location: error.php");
             exit();
         }
-    }     
+    }    
     // Close statement
     mysqli_stmt_close($stmt);
     
