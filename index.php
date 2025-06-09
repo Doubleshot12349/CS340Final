@@ -24,6 +24,25 @@
         table tr td:last-child a{
             margin-right: 15px;
         }
+        .navbar {
+            border-radius: 0;
+            margin-bottom: 30px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .navbar-inverse .navbar-brand {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .navbar-inverse .navbar-nav > li > a {
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+        .navbar-nav > li > a {
+            padding: 14px 20px;
+            font-size: 16px;
+        }
     </style>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -56,23 +75,17 @@
                 </ol>
 
                 <nav class="navbar navbar-inverse">
-                        <!-- Brand and toggle get grouped -->
-                        <div class="navbar-header">
-                        <a class="navbar-brand" href="index.php">Gladiator Mages</a>
-                        </div>
-
-                        <!-- Links to other pages -->
-                        <ul class="navbar-index">
+                    <ul class="nav navbar-nav">
                         <li class="active"><a href="index.php">Home</a></li>
                         <!-- <li><a href="createSpellbook.php">Create Spellbook</a></li> -->
-                        <li><a href="createSB_connor.php">Create Spellbook</a></li>
+                        <li class="active"><a href="createSB_connor.php">Create Spellbook</a></li>
                         <li class="active"><a href="viewActiveSpells.php">View Active Spells</a></li>
                         <li class="active"><a href="deleteUser.php">Delete Player</a></li>
                         <!-- <li class="active"><a href="updateLoadout.php">Update Loadout</a></li> -->
                         <li class="active"><a href="uL_with_pID.php">Update Loadout</a></li>
                         <li class="active"><a href="removeSpells.php">Remove Spells</a></li>
                         <!-- Add more pages as needed -->
-                        </ul>
+                    </ul>
                 </nav>
 
 		       <h2 class="pull-left">PLACEHOLDER</h2>
