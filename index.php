@@ -80,10 +80,9 @@
                         <!-- <li><a href="createSpellbook.php">Create Spellbook</a></li> -->
                         <li class="active"><a href="createSB_connor.php">Create Spellbook</a></li>
                         <li class="active"><a href="viewActiveSpells.php">View Active Spells</a></li>
+                        <li class="active"><a href="uL_with_pID.php">Update Loadout</a></li>
                         <li class="active"><a href="deleteUser.php">Delete Player</a></li>
                         <!-- <li class="active"><a href="updateLoadout.php">Update Loadout</a></li> -->
-                        <li class="active"><a href="uL_with_pID.php">Update Loadout</a></li>
-                        <li class="active"><a href="removeSpells.php">Remove Spells</a></li>
                         <!-- Add more pages as needed -->
                     </ul>
                 </nav>
