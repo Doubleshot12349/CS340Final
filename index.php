@@ -58,6 +58,10 @@
         // Include config file
         require_once "config.php";
         //		include "header.php";
+
+        $sql = "SELECT player_id, name, score FROM Player ORDER BY score DESC LIMIT 10";
+        $result = mysqli_query($link, $sql);
+
     ?>
 
     <div class="wrapper">
@@ -87,6 +91,32 @@
                         <!-- Add more pages as needed -->
                     </ul>
                 </nav>
+
+                <?php if ($result && mysqli_num_rows($result) > 0): ?>
+                    <h2>Leaderboard</h2>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player Name</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $rank = 1; ?>
+                            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                                <tr>
+                                    <td><?php echo $rank++; ?></td>
+                                    <td><?php echo htmlspecialchars($row['name']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['score']); ?></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <div class="alert alert-info">No players found in the leaderboard.</div>
+                <?php endif; ?>
+
 
 		       
                     </div>
