@@ -1,42 +1,50 @@
 <?php
+session_start();
+// ob_start();
+
+// Include config file
 require_once "config.php";
 
+// Enable error reporting
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
+
+// Define variables
 $player_id = "";
 $message = "";
 $message_class = "";
 
+// Process form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $player_id = trim($_POST["player_id"]);
-
-    if (empty($player_id)) {
+    // Validate input
+    if (empty(trim($_POST["player_id"]))) {
         $message = "Please enter a Player ID.";
         $message_class = "alert-warning";
     } else {
-        $sql_check = "SELECT player_id FROM Player WHERE player_id = ?";
-        $stmt_check = mysqli_prepare($link, $sql_check);
+        $player_id = trim($_POST["player_id"]);
 
-        if ($stmt_check) {
+        // Check if player exists
+        $sql_check = "SELECT player_id FROM Player WHERE player_id = ?";
+        if ($stmt_check = mysqli_prepare($link, $sql_check)) {
             mysqli_stmt_bind_param($stmt_check, "s", $player_id);
             mysqli_stmt_execute($stmt_check);
-            mysqli_stmt_store_result($stmt_check);
+            $result = mysqli_stmt_get_result($stmt_check);
 
-            if (mysqli_stmt_num_rows($stmt_check) === 1) {
-                mysqli_stmt_close($stmt_check);
+            if ($result && mysqli_num_rows($result) === 1) {
+                // Player found — proceed to delete
 
-                $sql_delete = "DELETE FROM Player WHERE player_id = ? LIMIT 1";
-                $stmt_delete = mysqli_prepare($link, $sql_delete);
-
-                if ($stmt_delete) {
+                $sql_delete = "DELETE FROM Player WHERE player_id = ?";
+                if ($stmt_delete = mysqli_prepare($link, $sql_delete)) {
                     mysqli_stmt_bind_param($stmt_delete, "s", $player_id);
                     if (mysqli_stmt_execute($stmt_delete)) {
                         $message = "Player with ID <strong>" . htmlspecialchars($player_id) . "</strong> has been deleted.";
                         $message_class = "alert-success";
                     } else {
-                        $message = "Error deleting the player.";
+                        $message = "Error deleting the player: " . mysqli_error($link);
                         $message_class = "alert-danger";
                     }
-                    mysqli_stmt_close($stmt_delete);
+                mysqli_stmt_close($stmt_delete);
                 } else {
                     $message = "Failed to prepare delete statement.";
                     $message_class = "alert-danger";
@@ -51,9 +59,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $message_class = "alert-danger";
         }
     }
-    mysqli_close($link);
-}
 
+    mysqli_close($link);
 }
 ?>
 
@@ -72,14 +79,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2>Delete Gladiator Mage Account</h2>
         <p>Enter the Player ID to delete their account.</p>
 
-        <?php if ($message): ?>
+        <?php if (!empty($message)): ?>
             <div class="alert <?php echo $message_class; ?>"><?php echo $message; ?></div>
         <?php endif; ?>
 
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <div class="form-group">
                 <label for="player_id">Player ID</label>
-                <input type="text" name="player_id" id="player_id" class="form-control" value="<?php echo htmlspecialchars($player_id); ?>" required />
+                <input type="text" name="player_id" id="player_id" class="form-control" required />
             </div>
             <input type="submit" class="btn btn-danger" value="Delete Player" />
             <a href="index.php" class="btn btn-default">Cancel</a>
