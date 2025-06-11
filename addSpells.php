@@ -3,65 +3,45 @@
 	ob_start();
 	$spell_id = $_SESSION["spell_id"];
 	$spellbook_id = $_SESSION["spellbook_id"];
-	// Include config file
 	require_once "config.php";
-
 ?>
 
 
 <?php 
-	// Define variables and initialize with empty values
-	$spellbook_id_err = $spell_id_err = $spellbook_id_err = "" ;
-	$SQL_err="";
+$spellbook_id_err = $spell_id_err = $spellbook_id_err = "" ;
+$SQL_err="";
  
-	// Processing form data when form is submitted
-	if($_SERVER["REQUEST_METHOD"] == "POST"){
-		// Validate spellbook_id
-		$spellbook_id = trim($_POST["spellbook_id"]);
-		if(empty($spellbook_id)){
-			$spellbook_id_err = "Please enter a spellbook_id";     
-		}
-	
-		// Validate the spell_id
-		$spell_id = trim($_POST["spell_id"]);
-		if(empty($spell_id)){
-			$spell_id_err = "Please enter a spell_id";     
-		}
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+	$spellbook_id = trim($_POST["spellbook_id"]);
+	if(empty($spellbook_id)){
+		$spellbook_id_err = "Please enter a spellbook_id";     
+	}
 
+	$spell_id = trim($_POST["spell_id"]);
+	if(empty($spell_id)){
+		$spell_id_err = "Please enter a spell_id";     
+	}
 
-    // Check input errors before inserting in database
-		if(empty($spell_id_err) && empty($spellbook_id_err) ){
-        // Prepare an insert statement
-			$sql = "INSERT INTO `contains` (`spellbook_id`, `spell_id`)  VALUES (?, ?)";
+	if(empty($spell_id_err) && empty($spellbook_id_err) ){
+		$sql = "INSERT INTO `contains` (`spellbook_id`, `spell_id`)  VALUES (?, ?)";
 
-
-        	if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-				mysqli_stmt_bind_param($stmt, 'ii', $param_spellbook_id, $param_spell_id);
-            
-				// Set parameters
-				$param_spellbook_id = $spellbook_id;
-				$param_spell_id = $spell_id;
-        
-            // Attempt to execute the prepared statement
-				if(mysqli_stmt_execute($stmt)){
-               // Records created successfully. Redirect to landing page
-				//    header("location: index.php");
-				//	exit();
-				} else{
-					// Error
-					echo "Error";
-					//exit();
-					$SQL_err = mysqli_error($link);
-				}
-			}
-         
-        // Close statement
-        mysqli_stmt_close($stmt);
+		if($stmt = mysqli_prepare($link, $sql)){
+			mysqli_stmt_bind_param($stmt, 'ii', $param_spellbook_id, $param_spell_id);
 		
+			$param_spellbook_id = $spellbook_id;
+			$param_spell_id = $spell_id;
+	
+			if(mysqli_stmt_execute($stmt)){
+			//exit();
+			} else{
+				echo "Error";
+				//exit();
+				$SQL_err = mysqli_error($link);
+			}
+		}
+		mysqli_stmt_close($stmt);
 	}   
-		// Close connection
-		mysqli_close($link);
+	mysqli_close($link);
 }
 ?>
 
@@ -127,7 +107,6 @@
 			<label>Spell</label>
 			<select name="spell_id" class="form-control">
 			<?php
-
 				for($i=0; $i<$num_row2; $i++) {
 					$spell_ids=mysqli_fetch_row($result2);
 					echo "<option value='$spell_ids[0]' >".$spell_ids[0]."  ".$spell_ids[1]."</option>";

@@ -5,26 +5,16 @@ session_start();
 // Include config file
 require_once "config.php";
 
-// Enable error reporting
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
-
-// Define variables
 $player_id = "";
 $message = "";
 $message_class = "";
 
-// Process form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate input
     if (empty(trim($_POST["player_id"]))) {
         $message = "Please enter a Player ID.";
         $message_class = "alert-warning";
     } else {
         $player_id = trim($_POST["player_id"]);
-
-        // Check if player exists
         $sql_check = "SELECT player_id FROM Player WHERE player_id = ?";
         if ($stmt_check = mysqli_prepare($link, $sql_check)) {
             mysqli_stmt_bind_param($stmt_check, "s", $player_id);
@@ -32,8 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $result = mysqli_stmt_get_result($stmt_check);
 
             if ($result && mysqli_num_rows($result) === 1) {
-                // Player found — proceed to delete
-
                 $sql_delete = "DELETE FROM Player WHERE player_id = ?";
                 if ($stmt_delete = mysqli_prepare($link, $sql_delete)) {
                     mysqli_stmt_bind_param($stmt_delete, "s", $player_id);

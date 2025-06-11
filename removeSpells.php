@@ -26,7 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         mysqli_close($link);
     }
 } else {
-    // Check if spell_id and spellbook_id are provided in the URL
     if (empty($_GET["spell_id"]) || empty($_GET["spellbook_id"])) {
         header("location: error.php");
         exit();

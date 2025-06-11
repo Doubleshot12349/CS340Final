@@ -3,72 +3,53 @@
 	ob_start();
 	$player_id = $_SESSION["player_id"];
 	$name = $_SESSION["name"];
-	// Include config file
-	require_once "config.php";
 
+	require_once "config.php";
 ?>
 
 
 <?php 
-	// Define variables and initialize with empty values
 	$spellbook_id = "";
 	$spellbook_id_err = $player_id_err = $name_err = "" ;
 	$SQL_err="";
- 
-	// Processing form data when form is submitted
+
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
-		// Validate Project number
 		$spellbook_id = trim($_POST["spellbook_id"]);
 		if(empty($spellbook_id)){
 			$spellbook_id_err = "Please select a project.";
 		} 
     
-		// Validate name
 		$name = trim($_POST["name"]);
 		if(empty($name)){
 			$name_err = "Please enter name";     
 		}
 	
-		// Validate the player_id
 		if(empty($player_id)){
 			$player_id_err = "No player_id.";     
 		}
 
-
-    // Check input errors before inserting in database
 		if(empty($player_id_err) && empty($name_err) && empty($spellbook_id_err) ){
-        // Prepare an insert statement
 			$sql = "INSERT INTO `Spellbook` (`spellbook_id`, `name`, `number_spells`, `player_id`)  VALUES (?, ?, ?)";
 
-
         	if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
 				mysqli_stmt_bind_param($stmt, 'sii', $param_player_id, $param_spellbook_id, $param_name);
             
-				// Set parameters
 				$param_player_id = $player_id;
 				$param_spellbook_id = $spellbook_id;
 				$param_name = $name;
         
-            // Attempt to execute the prepared statement
 				if(mysqli_stmt_execute($stmt)){
-               // Records created successfully. Redirect to landing page
-				//    header("location: index.php");
-				//	exit();
+
+				//exit();
 				} else{
-					// Error
 					echo "Error";
 					//exit();
 					$SQL_err = mysqli_error($link);
 				}
 			}
-         
-        // Close statement
         mysqli_stmt_close($stmt);
-		
 	}   
-		// Close connection
-		mysqli_close($link);
+	mysqli_close($link);
 }
 ?>
 

@@ -1,6 +1,5 @@
 <?php
 	session_start();
-    // Include config file
     require_once "config.php";
 ?>
 <!DOCTYPE html>
@@ -40,7 +39,6 @@
                     </div>
 <?php
 
-    // Prepare a select statement
     $sql = "SELECT P.player_id AS 'Player ID', P.name AS 'Player Name',SpellB.name AS 'Spell Name'
         ,SpellB.spell_id,SpellB.spellbook_id
         FROM Player AS P 
@@ -49,11 +47,9 @@
             JOIN Spell AS S ON C.spell_id=S.spell_id) AS SpellB
                 ON SpellB.spellbook_id=P.loadout";
 
-    // fails to prepare
     if($stmt = mysqli_prepare($link, $sql)){
         
 
-        // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){
             $result = mysqli_stmt_get_result($stmt);
     
@@ -67,7 +63,6 @@
                         echo "</tr>";
                     echo "</thead>";
                     echo "<tbody>";							
-				// output data of each row
                     while($row = mysqli_fetch_array($result)){
                         echo "<tr>";
                         echo "<td>" . $row[0] . "</td>";
@@ -85,19 +80,13 @@
 			} else {
 				echo "No Dependents. ";
 			}
-//				mysqli_free_result($result);
         } else{
-			// URL doesn't contain valid id parameter. Redirect to error page
             header("location: error.php");
             exit();
         }
     }    
-    // Close statement
     mysqli_stmt_close($stmt);
-    
-    // Close connection
     mysqli_close($link);
-
 ?>					                 					
 	<p><a href="index.php" class="btn btn-primary">Back</a></p>
     </div>
