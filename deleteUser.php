@@ -6,23 +6,28 @@ $message = "";
 $message_class = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $player_id = trim($_POST["player_id"]);
 
     if (empty($player_id)) {
         $message = "Please enter a Player ID.";
         $message_class = "alert-warning";
     } else {
-        $sql_check = "SELECT * FROM Player WHERE player_id = ?";
-        if ($stmt_check = mysqli_prepare($link, $sql_check)) {
+        $sql_check = "SELECT player_id FROM Player WHERE player_id = ?";
+        $stmt_check = mysqli_prepare($link, $sql_check);
+
+        if ($stmt_check) {
             mysqli_stmt_bind_param($stmt_check, "s", $player_id);
             mysqli_stmt_execute($stmt_check);
-            $result = mysqli_stmt_get_result($stmt_check);
+            mysqli_stmt_store_result($stmt_check);
 
-            if (mysqli_num_rows($result) === 1) {
+            if (mysqli_stmt_num_rows($stmt_check) === 1) {
                 mysqli_stmt_close($stmt_check);
 
-                $sql_delete = "DELETE FROM Player WHERE player_id = ?";
-                if ($stmt_delete = mysqli_prepare($link, $sql_delete)) {
+                $sql_delete = "DELETE FROM Player WHERE player_id = ? LIMIT 1";
+                $stmt_delete = mysqli_prepare($link, $sql_delete);
+
+                if ($stmt_delete) {
                     mysqli_stmt_bind_param($stmt_delete, "s", $player_id);
                     if (mysqli_stmt_execute($stmt_delete)) {
                         $message = "Player with ID <strong>" . htmlspecialchars($player_id) . "</strong> has been deleted.";
@@ -47,6 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     mysqli_close($link);
+}
+
 }
 ?>
 
