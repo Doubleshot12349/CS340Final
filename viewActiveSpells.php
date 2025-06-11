@@ -83,7 +83,8 @@
                 echo "</table>";				
 				mysqli_free_result($result);
 			} else {
-				echo "No Dependents. ";
+				echo "No Dependents. Add a new spell";
+                echo "<a href='addSpells.php?spell_id=0&spellbook_id=0' title='Add Spell' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
 			}
 //				mysqli_free_result($result);
         } else{
