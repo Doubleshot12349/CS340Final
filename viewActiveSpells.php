@@ -50,7 +50,7 @@
 
     if($stmt = mysqli_prepare($link, $sql)){
         
-
+        //Post relevant information as an HTML table
         if(mysqli_stmt_execute($stmt)){
             $result = mysqli_stmt_get_result($stmt);
     

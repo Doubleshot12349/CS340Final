@@ -5,9 +5,11 @@ require_once "config.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["spell_id"]) && isset($_POST["spellbook_id"])) {
+        //Prepare IDs from POST request
         $spell_id = $_POST["spell_id"];
         $spellbook_id = $_POST["spellbook_id"];
 
+        //Carry out Delete operation
         $sql = "DELETE FROM contains WHERE spell_id = ? AND spellbook_id = ?";
         if ($stmt = mysqli_prepare($link, $sql)) {
             mysqli_stmt_bind_param($stmt, "ii", $param_spell_id, $param_spellbook_id);

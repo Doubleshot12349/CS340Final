@@ -3,7 +3,7 @@
 require_once "config.php";
 
 function changeScore($player_id, $score, $link) {
-
+    //Check player exists
     $sql_check_player = "SELECT * FROM Player WHERE player_id = ?";
     if ($stmt_check = mysqli_prepare($link, $sql_check_player)) {
         mysqli_stmt_bind_param($stmt_check, "s", $player_id);
@@ -16,6 +16,7 @@ function changeScore($player_id, $score, $link) {
         mysqli_stmt_close($stmt_check);
     }
 
+    //Update score
     $sql_update = "UPDATE Player SET score = ? WHERE player_id = ?";
     if ($stmt_update = mysqli_prepare($link, $sql_update)) {
         mysqli_stmt_bind_param($stmt_update, "is", $score, $player_id);

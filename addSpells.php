@@ -1,5 +1,4 @@
 <!-- addSpells.php -->
- 
 <?php
 	session_start();
 	ob_start();
@@ -14,16 +13,18 @@ $spellbook_id_err = $spell_id_err = $spellbook_id_err = "" ;
 $SQL_err="";
  
 if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+	//Validate spellbook_id and spell_id
 	$spellbook_id = trim($_POST["spellbook_id"]);
 	if(empty($spellbook_id)){
 		$spellbook_id_err = "Please enter a spellbook_id";     
 	}
-
 	$spell_id = trim($_POST["spell_id"]);
 	if(empty($spell_id)){
 		$spell_id_err = "Please enter a spell_id";     
 	}
 
+	//Insert into contains table if no errors
 	if(empty($spell_id_err) && empty($spellbook_id_err) ){
 		$sql = "INSERT INTO `contains` (`spellbook_id`, `spell_id`)  VALUES (?, ?)";
 

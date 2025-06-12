@@ -86,12 +86,14 @@
 
                 <nav class="navbar navbar-inverse">
                     <ul class="nav navbar-nav">
+                        <!-- Add necessary paths here -->
                         <li class="active"><a href="index.php">Home</a></li>
                         <li><a href="createSB_connor.php">Create Spellbook</a></li>
                         <li><a href="viewActiveSpells.php">View Active Spells</a></li>
                         <li><a href="updateScore.php">Update Score</a></li>
                         <li><a href="uL_with_pID.php">Update Loadout</a></li>
                         <li><a href="deleteUser.php">Delete Player</a></li>
+                        <!-- Add more links as needed -->
                     </ul>
                 </nav>
 

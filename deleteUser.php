@@ -11,6 +11,7 @@ $message = "";
 $message_class = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    //Check that player_id is not empty
     if (empty(trim($_POST["player_id"]))) {
         $message = "Please enter a Player ID.";
         $message_class = "alert-warning";
@@ -22,10 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             mysqli_stmt_execute($stmt_check);
             $result = mysqli_stmt_get_result($stmt_check);
 
+            //If there's a valid player_id, proceed to delete
             if ($result && mysqli_num_rows($result) === 1) {
                 $sql_delete = "DELETE FROM Player WHERE player_id = ?";
                 if ($stmt_delete = mysqli_prepare($link, $sql_delete)) {
                     mysqli_stmt_bind_param($stmt_delete, "s", $player_id);
+                    
+                    //Delete the player
                     if (mysqli_stmt_execute($stmt_delete)) {
                         $message = "Player with ID <strong>" . htmlspecialchars($player_id) . "</strong> has been deleted.";
                         $message_class = "alert-success";
