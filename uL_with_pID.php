@@ -52,7 +52,8 @@ $sql = "SELECT
             P.player_id AS 'Player ID',
             P.name AS 'Player Name',
             SB.spellbook_id AS 'Spellbook ID',
-            SB.name AS 'Spellbook Name'
+            SB.name AS 'Spellbook Name',
+            SB.number_spells AS 'Number of Spells'
         FROM 
             Player AS P
         JOIN 
@@ -87,6 +88,7 @@ $result = mysqli_query($link, $sql);
                         <th>Player Name</th>
                         <th>Spellbook ID</th>
                         <th>Spellbook Name</th>
+                        <th>Number of Spells</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -96,6 +98,7 @@ $result = mysqli_query($link, $sql);
                             <td><?php echo htmlspecialchars($row['Player Name']); ?></td>
                             <td><?php echo htmlspecialchars($row['Spellbook ID']); ?></td>
                             <td><?php echo htmlspecialchars($row['Spellbook Name']); ?></td>
+                            <td><?php echo htmlspecialchars($row['Number of Spells']); ?></td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
