@@ -40,6 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $sql = "SELECT 
             player_id AS 'Player ID',
             name AS 'Player Name',
+            level,
             score AS 'Score'
         FROM 
             Player
@@ -71,6 +72,7 @@ $result = mysqli_query($link, $sql);
                     <tr>
                         <th>Player ID</th>
                         <th>Player Name</th>
+                        <th>Level</th>
                         <th>Score</th>
                     </tr>
                 </thead>
@@ -79,6 +81,7 @@ $result = mysqli_query($link, $sql);
                         <tr>
                             <td><?php echo htmlspecialchars($row['Player ID']); ?></td>
                             <td><?php echo htmlspecialchars($row['Player Name']); ?></td>
+                            <td><?php echo htmlspecialchars($row['level']); ?></td>
                             <td><?php echo htmlspecialchars($row['Score']); ?></td>
                         </tr>
                     <?php endwhile; ?>
