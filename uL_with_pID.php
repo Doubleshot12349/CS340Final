@@ -1,5 +1,6 @@
 <!-- uL_with_pID.php -->
 <!-- used over updateLoadout.php -->
+ <!-- Created by Group 5: Connor Sun and Brett Thompson -->
 <?php
 require_once "config.php";
 

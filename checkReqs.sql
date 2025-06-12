@@ -1,3 +1,5 @@
+--checkReqs.sql
+--Created by Group 5: Connor Sun and Brett Thompson
 CREATE TRIGGER `checkReqs` BEFORE INSERT ON `contains`
  FOR EACH ROW BEGIN
  DECLARE playerLevel INT;

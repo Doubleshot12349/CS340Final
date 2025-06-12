@@ -1,4 +1,5 @@
 <!-- config.php -->
+ <!-- Created by Group 5: Connor Sun and Brett Thompson -->
 <?php
 	/* Display Errors */
 	//ini_set('display_errors', 1);

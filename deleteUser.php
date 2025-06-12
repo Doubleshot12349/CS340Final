@@ -1,4 +1,5 @@
 <!-- deleteUser.php -->
+<!-- Created by Group 5: Connor Sun and Brett Thompson -->
 <?php
 session_start();
 // ob_start();

@@ -1,4 +1,5 @@
 <!-- viewActiveSpells.php -->
+<!-- Created by Group 5: Connor Sun and Brett Thompson -->
 <?php
 	session_start();
     require_once "config.php";
@@ -49,7 +50,7 @@
                 ON SpellB.spellbook_id=P.loadout";
 
     if($stmt = mysqli_prepare($link, $sql)){
-        
+
         //Post relevant information as an HTML table
         if(mysqli_stmt_execute($stmt)){
             $result = mysqli_stmt_get_result($stmt);
