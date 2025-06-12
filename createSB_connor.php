@@ -1,3 +1,5 @@
+<!-- createSB_connor.php -->
+<!-- used over createSpellbook.php -->
 <?php
 require_once "config.php";
 

@@ -1,3 +1,4 @@
+<!-- updateScore.php -->
 <?php
 require_once "config.php";
 

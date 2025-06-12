@@ -1,3 +1,5 @@
+<!-- uL_with_pID.php -->
+<!-- used over updateLoadout.php -->
 <?php
 require_once "config.php";
 
